@@ -51,7 +51,7 @@ namespace Gestão_de_Sistema_Bancário
                 SqlCommand Comando = new SqlCommand($"Insert into Clientes(BI, Nome, Sexo, Data_Nascimento, Id_Municipio) Values ('{Cliente.BI}','{Cliente.NomeCompleto}', '{Cliente.sexo}', '{Cliente.DataNascimento}', '{Cliente.IDMunicipio}')", Conector);
 
                 SqlCommand Comando2 = new SqlCommand($"Insert into Conta (Numero_Conta, Saldo, BI, Cod_Admin, IBAN, Data_Abertura, Data_Fechamento, Tipo_Conta) values ('{Convert.ToInt64( this.NumeroConta)}','{this.Saldo}','{this.Cliente.BI}','{this.IDGestor}','{Convert.ToInt64( this.IBAN)}','{this.DataAbertura}','{this.DataFechamento}', '{this.TipoConta}')", Conector);
-                SqlCommand Comando3 = new SqlCommand($"Insert into Contactos_Cliente(Contacto, BI)Values('{Cliente.Contacto}', '{Cliente.BI}')", Conector);
+                SqlCommand Comando3 = new SqlCommand($"Insert into Contactos_Cliente(Contacto, BI_Cliente)Values('{Cliente.Contacto}', '{Cliente.BI}')", Conector);
 
                 Conector.Open();
                 Comando.ExecuteNonQuery();
@@ -84,8 +84,11 @@ namespace Gestão_de_Sistema_Bancário
             }
             else
             {
-                SqlCommand Comando = new SqlCommand($"delete from Conta where Numero_Conta ='{Nconta}'", Conector);
-                Comando.ExecuteNonQuery();
+                SqlCommand Comando_2 = new SqlCommand($"delete from Transacoes where Numero_Conta ='{Nconta}'", Conector);
+                SqlCommand Comando_3 = new SqlCommand($"delete from Conta where Numero_Conta ='{Nconta}'", Conector);
+                Comando_2.ExecuteNonQuery();
+                Comando_3.ExecuteNonQuery();
+
                 
 
             }
@@ -115,6 +118,8 @@ namespace Gestão_de_Sistema_Bancário
             Comando_3.ExecuteNonQuery();
 
             MessageBox.Show($"DEPÓSITO DE {levantamento:c} FEITO COM SUCESSO");
+
+            
 
             Conector.Close();
 
@@ -148,6 +153,8 @@ namespace Gestão_de_Sistema_Bancário
                 Comando_3.ExecuteNonQuery();
 
                 MessageBox.Show($"LEVANTAMENTO DE {levantamento:c} FEITO COM SUCESSO");
+
+                
 
                 Conector.Close();
             }
@@ -201,6 +208,8 @@ namespace Gestão_de_Sistema_Bancário
 
                 MessageBox.Show($"Transferência DE {levantamento:c} FEITO COM SUCESSO");
 
+                
+
                
             }
             else
@@ -216,8 +225,13 @@ namespace Gestão_de_Sistema_Bancário
         {
 
         }
-        public void Transacoes()
+        public void Transacoes(string Tipo_Transacao, long Nconta, decimal valor)
         {
+            SqlConnection Conector = new SqlConnection($"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=Sistema_Bancario;Data Source=LAPTOP-1P76VB17");
+            SqlCommand Comandos = new SqlCommand($"insert into Transacoes(Tipo_Transacao, Numero_conta, Data_Transacao, Valor) Values('{Tipo_Transacao}', {Nconta}, '{DateTime.Now}', {valor})", Conector);
+            Conector .Open();
+            Comandos.ExecuteNonQuery();
+            Conector.Close();
 
         }
     }

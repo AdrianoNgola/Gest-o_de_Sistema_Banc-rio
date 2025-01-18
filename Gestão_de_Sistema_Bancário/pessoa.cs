@@ -13,7 +13,7 @@ namespace Gestão_de_Sistema_Bancário
          public string SobreNome { get; set; }
         public string NomeCompleto { get; }
         public string sexo { get; set; }
-        public DateTime DataNascimento { get; set; }
+        public DateTime  DataNascimento { get; set; }
         public int Idade { get; }
         public int BI { get; set; }
         public int IDMunicipio { get;}
